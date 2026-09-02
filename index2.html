@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fridge & Food Waste Tracker</title>
+    <!-- โหลดฟอนต์ Prompt จาก Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="logo-icon">🥗</div>
+            <h1>ZeroWaste Kitchen</h1>
+            <p>ระบบจัดการวัตถุดิบตู้เย็น & วางแผนมื้ออาหาร</p>
+        </header>
+        <!-- Alert Box สำหรับแจ้งเตือนวัตถุดิบใกล้หมดอายุ -->
+<div id="alert-banner" class="alert-banner" style="display: none;">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-content">
+        <strong id="alert-title">แจ้งเตือนวัตถุดิบ!</strong>
+        <p id="alert-message">มีวัตถุดิบใกล้หมดอายุหรือหมดอายุแล้ว</p>
+    </div>
+</div>
+
+        <main class="main-content">
+            <!-- Section 1: Portion Planner -->
+            <section class="card">
+                <div class="card-header">
+                    <span class="icon">🍲</span>
+                    <h2>คำนวณปริมาณการปรุงอาหาร</h2>
+                </div>
+                <div class="input-group">
+                    <label for="people">จำนวนผู้บริโภค (คน)</label>
+                    <input type="number" id="people" value="1" min="1" onchange="calculatePortions()">
+                </div>
+                <div class="portion-grid">
+                    <div class="portion-card">
+                        <span class="p-icon">🍚</span>
+                        <span class="p-label">ข้าวสวย</span>
+                        <div class="p-value"><span id="rice-val">150</span> <small>กรัม</small></div>
+                    </div>
+                    <div class="portion-card">
+                        <span class="p-icon">🥩</span>
+                        <span class="p-label">เนื้อสัตว์</span>
+                        <div class="p-value"><span id="meat-val">150</span> <small>กรัม</small></div>
+                    </div>
+                    <div class="portion-card">
+                        <span class="p-icon">🥦</span>
+                        <span class="p-label">ผักสด</span>
+                        <div class="p-value"><span id="veg-val">100</span> <small>กรัม</small></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Input Form -->
+            <section class="card">
+                <div class="card-header">
+                    <span class="icon">📥</span>
+                    <h2>เพิ่มวัตถุดิบใหม่เข้าตู้เย็น</h2>
+                </div>
+                <form id="add-form" onsubmit="saveToGoogleSheet(event)" class="form-grid">
+                    <div class="form-group">
+                        <label>ชื่อวัตถุดิบ</label>
+                        <input type="text" id="food-name" placeholder="เช่น นมสด, ผักสลัด, อกไก่" required>
+                    </div>
+                    <div class="form-group">
+                        <label>วันหมดอายุ</label>
+                        <input type="date" id="expiry-date" required>
+                    </div>
+                    <button type="submit" id="submit-btn" class="btn btn-primary">
+                        <span>บันทึกลง Google Sheets</span>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Section 3: List View -->
+            <section class="card">
+                <div class="card-header space-between">
+                    <div class="title-with-icon">
+                        <span class="icon">🧊</span>
+                        <h2>รายการวัตถุดิบในตู้เย็น</h2>
+                    </div>
+                    <button onclick="loadFromGoogleSheet()" class="btn-refresh" title="รีเฟรชข้อมูล">🔄</button>
+                </div>
+                <div id="food-list" class="food-list"></div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
